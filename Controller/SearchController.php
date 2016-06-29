@@ -29,6 +29,7 @@ use Bluemesa\Bundle\SearchBundle\Search\SearchQueryInterface;
 
 use Bluemesa\Bundle\SearchBundle\Form\SearchType;
 use Bluemesa\Bundle\SearchBundle\Form\AdvancedSearchType;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * SearchController
@@ -81,14 +82,14 @@ abstract class SearchController extends AbstractController
      * @Route("/result/")
      * @Template()
      *
+     * @param  Request $request
      * @return array
      */
-    public function resultAction()
+    public function resultAction(Request $request)
     {
         $form = $this->createForm($this->getSearchForm(), $this->createSearchQuery());
         $advancedForm = $this->createForm($this->getAdvancedSearchForm(), $this->createSearchQuery(true));
-        $request = $this->get('request');
-        
+
         if ($request->getMethod() == 'POST') {
             
             $form->handleRequest($request);
