@@ -112,9 +112,9 @@ abstract class SearchController extends AbstractController
         $repository = $this->getObjectManager()->getRepository($searchQuery->getEntityClass());
         
         if ($repository instanceof SearchableRepositoryInterface) {
-            return $this->handleSearchableRepository($repository, $searchQuery);
+            return $this->handleSearchableRepository($request, $repository, $searchQuery);
         } else {
-            return $this->handleNonSearchableRepository($repository, $searchQuery);
+            return $this->handleNonSearchableRepository($request, $repository, $searchQuery);
         }
     }
     
@@ -156,19 +156,20 @@ abstract class SearchController extends AbstractController
      * @param mixed $searchQuery
      * @return mixed
      */
-    protected function handleNonSearchableRepository($repository, $searchQuery)
+    protected function handleNonSearchableRepository(Request $request, $repository, $searchQuery)
     {
         throw $this->createNotFoundException();
     }
     
     /**
      * Handle searchable repository classes
-     * 
-     * @param mixed $repository
-     * @param mixed $searchQuery
+     *
+     * @param Request $request
+     * @param mixed   $repository
+     * @param mixed   $searchQuery
      * @return mixed
      */    
-    protected function handleSearchableRepository($repository, $searchQuery)
+    protected function handleSearchableRepository(Request $request, $repository, $searchQuery)
     {        
         $terms = $searchQuery->getTerms();
         $excluded = $searchQuery->getExcluded();
@@ -182,7 +183,7 @@ abstract class SearchController extends AbstractController
         $result = $repository->getSearchQuery($searchQuery)
                              ->setHint('knp_paginator.count', $resultCount);
         $paginator  = $this->getPaginator();
-        $page = $this->getCurrentPage();
+        $page = $this->getCurrentPage($request);
         $entities = $paginator->paginate($result, $page, 25);
 
         return array('entities' => $entities,
