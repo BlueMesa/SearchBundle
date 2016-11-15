@@ -40,8 +40,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 abstract class SearchController extends AbstractController
 {
-    
-    
     /**
      * Render advanced search form
      *
