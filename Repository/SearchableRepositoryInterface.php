@@ -19,6 +19,7 @@
 namespace Bluemesa\Bundle\SearchBundle\Repository;
 
 use Bluemesa\Bundle\SearchBundle\Search\SearchQueryInterface;
+use Doctrine\ORM\Query;
 
 /**
  * SearchableVialRepository
@@ -30,15 +31,15 @@ interface SearchableRepositoryInterface
     /**
      * Get search Query
      * 
-     * @param Bluemesa\SearchBundle\Search\SearchQueryInterface $search
-     * @return Doctrine\ORM\Query
+     * @param  SearchQueryInterface $search
+     * @return Query
      */
     public function getSearchQuery(SearchQueryInterface $search);
         
     /**
      * Get search result count
      * 
-     * @param Bluemesa\SearchBundle\Search\SearchQueryInterface $search
+     * @param  SearchQueryInterface $search
      * @return integer
      */
     public function getSearchResultCount(SearchQueryInterface $search);
