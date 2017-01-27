@@ -18,9 +18,10 @@ use Bluemesa\Bundle\SearchBundle\Event\SearchControllerEvents;
 use Bluemesa\Bundle\SearchBundle\Repository\SearchableRepositoryInterface;
 use Bluemesa\Bundle\SearchBundle\Search\SearchQuery;
 use Bluemesa\Bundle\SearchBundle\Search\SearchQueryInterface;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectRepository;
 use FOS\RestBundle\View\View;
+use JMS\DiExtraBundle\Annotation as DI;
+use JMS\Serializer\SerializerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,11 +29,13 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 
 /**
  * Class SearchHandler
+ *
+ * @DI\Service("bluemesa.search.handler")
+ *
  * @package Bluemesa\Bundle\SearchBundle\Request
  * @author Radoslaw Kamil Ejsmont <radoslaw@ejsmont.net>
  */
@@ -113,7 +116,7 @@ class SearchHandler
      */
     public function handle(Request $request)
     {
-        $action = $request->get('crud_action');
+        $action = $request->get('search_action');
         switch($action) {
             case 'search':
                 $result = $this->handleSearchAction($request);
@@ -138,6 +141,8 @@ class SearchHandler
      */
     public function handleSearchAction($request)
     {
+        dump($request);
+
         $type = $request->get('search_type');
         $realm = $request->get('search_realm');
         $form = $this->factory->create($type);
@@ -222,6 +227,9 @@ class SearchHandler
     /**
      * @param ObjectRepository $repository
      * @param SearchQueryInterface $query
+     *
+     * @throws \InvalidArgumentException
+     * @return null
      */
     protected function handleNonSearchableRepository(ObjectRepository $repository,
                                                      SearchQueryInterface $query)

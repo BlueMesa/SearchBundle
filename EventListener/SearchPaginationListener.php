@@ -12,7 +12,7 @@
 
 namespace Bluemesa\Bundle\SearchBundle\EventListener;
 
-use Bluemesa\Bundle\CrudBundle\Controller\Annotations\Paginate;
+use Bluemesa\Bundle\SearchBundle\Controller\Annotations\Paginate;
 use Bluemesa\Bundle\SearchBundle\Event\ResultActionEvent;
 use Bluemesa\Bundle\SearchBundle\Repository\SearchableRepositoryInterface;
 use Doctrine\Common\Annotations\Reader;
