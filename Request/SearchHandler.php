@@ -184,8 +184,6 @@ class SearchHandler
         $event = new ResultActionEvent($request, $form, $query, $repository);
         $this->dispatcher->dispatch(SearchControllerEvents::RESULT_QUERY, $event);
 
-        dump($event);
-
         if (null === $entities = $event->getEntities()) {
             if ($repository instanceof SearchableRepositoryInterface) {
                 $entities = $this->handleSearchableRepository($repository, $query);
