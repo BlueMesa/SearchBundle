@@ -141,11 +141,10 @@ class SearchHandler
      */
     public function handleSearchAction($request)
     {
-        dump($request);
-
         $type = $request->get('search_type');
         $realm = $request->get('search_realm');
-        $form = $this->factory->create($type);
+        $simple = $request->get('search_simple');
+        $form = $this->factory->create($type, null, array('simple' => $simple));
 
         return View::create(array('form' => $form->createView(), 'realm' => $realm));
     }
@@ -184,6 +183,8 @@ class SearchHandler
 
         $event = new ResultActionEvent($request, $form, $query, $repository);
         $this->dispatcher->dispatch(SearchControllerEvents::RESULT_QUERY, $event);
+
+        dump($event);
 
         if (null === $entities = $event->getEntities()) {
             if ($repository instanceof SearchableRepositoryInterface) {

@@ -13,6 +13,7 @@
 namespace Bluemesa\Bundle\SearchBundle\Event;
 
 
+use Bluemesa\Bundle\CoreBundle\Event\EntityEventInterface;
 use Bluemesa\Bundle\SearchBundle\Search\SearchQueryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityRepository;
@@ -20,7 +21,7 @@ use FOS\RestBundle\View\View;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class ResultActionEvent extends SearchEvent
+class ResultActionEvent extends SearchEvent implements EntityEventInterface
 {
     /**
      * @var FormInterface
@@ -113,7 +114,7 @@ class ResultActionEvent extends SearchEvent
     }
 
     /**
-     * @return mixed
+     * {@inheritdoc)
      */
     public function getEntities()
     {
@@ -121,7 +122,7 @@ class ResultActionEvent extends SearchEvent
     }
 
     /**
-     * @param mixed $entities
+     * {@inheritdoc)
      */
     public function setEntities($entities)
     {

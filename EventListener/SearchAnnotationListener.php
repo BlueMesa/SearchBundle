@@ -105,12 +105,12 @@ class SearchAnnotationListener
         $action = $this->getActionName($annotation, $m);
         $type = $this->getFormType($annotation, $c, $m);
         $realm = $this->getSearchRealm($annotation);
+        $simple = ! $event->isMasterRequest();
 
         $this->addRequestAttribute($request, 'search_action', $action);
         $this->addRequestAttribute($request, 'search_type', $type);
         $this->addRequestAttribute($request, 'search_realm', $realm);
-
-        dump($request);
+        $this->addRequestAttribute($request, 'search_simple', $simple);
     }
 
     /**
@@ -152,6 +152,12 @@ class SearchAnnotationListener
             $namespace = $c->getNamespaceName() . "\\";
             $type = str_replace("\\Controller\\", "\\Form\\", $namespace) .
                 ucfirst(str_replace("Action", "Type", $method));
+        }
+        if (! class_exists($type)) {
+            $namespace = $c->getNamespaceName() . "\\";
+            $controller = $c->getShortName();
+            $type = str_replace("\\Controller\\", "\\Form\\", $namespace) .
+                str_replace("Controller", "Type", $controller);
         }
         if (! class_exists($type)) {
             $message  = "Cannot find form ";

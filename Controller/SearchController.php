@@ -29,6 +29,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @Route("/search")
  *
+ * @deprecated
  * @author Radoslaw Kamil Ejsmont <radoslaw@ejsmont.net>
  */
 abstract class SearchController extends AbstractController
