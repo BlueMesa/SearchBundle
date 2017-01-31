@@ -1,22 +1,17 @@
 <?php
 
 /*
- * Copyright 2013 Radoslaw Kamil Ejsmont <radoslaw@ejsmont.net>
+ * This file is part of the SearchBundle.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2017 BlueMesa LabDB Contributors <labdb@bluemesa.eu>
  *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Bluemesa\Bundle\SearchBundle\Search;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * SearchQuery class
@@ -25,20 +20,19 @@ namespace Bluemesa\Bundle\SearchBundle\Search;
  */
 interface ACLSearchQueryInterface
 {
-    
     /**
      * Set the Token storage
      * 
-     * @param \\Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface  $tokenStorage
+     * @param TokenStorageInterface  $tokenStorage
      */
-    public function setTokenStorage($tokenStorage);
+    public function setTokenStorage(TokenStorageInterface $tokenStorage = null);
 
     /**
      * Set the Authorization checker
      *
-     * @param \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface  $authorizationChecker
+     * @param AuthorizationCheckerInterface  $authorizationChecker
      */
-    public function setAuthorizationChecker($authorizationChecker);
+    public function setAuthorizationChecker(AuthorizationCheckerInterface $authorizationChecker = null);
 
     /**
      * Get a user from the Security Context

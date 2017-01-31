@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the SearchBundle.
+ * This file is part of the Search Bundle.
  *
- * Copyright (c) 2016 BlueMesa LabDB Contributors <labdb@bluemesa.eu>
+ * Copyright (c) 2017 BlueMesa LabDB Contributors <labdb@bluemesa.eu>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,16 +13,12 @@ namespace Bluemesa\Bundle\SearchBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Bluemesa\Bundle\CoreBundle\Controller\AbstractController;
 use Bluemesa\Bundle\SearchBundle\Repository\SearchableRepositoryInterface;
-
-use Bluemesa\Bundle\SearchBundle\Search\SearchQuery;
 use Bluemesa\Bundle\SearchBundle\Search\SearchQueryInterface;
-
-use Bluemesa\Bundle\SearchBundle\Form\SearchType;
-use Bluemesa\Bundle\SearchBundle\Form\AdvancedSearchType;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * SearchController
@@ -40,7 +36,7 @@ abstract class SearchController extends AbstractController
      * @Template()
      * @Route("/") 
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return array|Response
      */
     public function advancedAction()
     {
@@ -57,7 +53,7 @@ abstract class SearchController extends AbstractController
      * @Route("/simple/")
      * @Template()
      * 
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return array|Response
      */
     public function searchAction()
     {
@@ -113,7 +109,7 @@ abstract class SearchController extends AbstractController
     /**
      * Load search query from session
      * 
-     * @return SearchQuery
+     * @return SearchQueryInterface
      */
     protected function loadSearchQuery()
     {
@@ -129,7 +125,7 @@ abstract class SearchController extends AbstractController
     /**
      * Save search query in session
      * 
-     * @param type $searchQuery
+     * @param SearchQueryInterface $searchQuery
      */
     protected function saveSearchQuery($searchQuery)
     {
@@ -143,7 +139,8 @@ abstract class SearchController extends AbstractController
     
     /**
      * Handle non-searchable repository classes
-     * 
+     *
+     * @param Request $request
      * @param mixed $repository
      * @param mixed $searchQuery
      * @return mixed
@@ -195,22 +192,16 @@ abstract class SearchController extends AbstractController
     /**
      * Get search form
      * 
-     * @return SearchType
+     * @return FormTypeInterface
      */
-    protected function getSearchForm()
-    {
-        return SearchType::class;
-    }
+    abstract protected function getSearchForm();
     
     /**
      * Get advanced search form
      * 
-     * @return AdvancedSearchType
+     * @return FormTypeInterface
      */
-    protected function getAdvancedSearchForm()
-    {
-        return AdvancedSearchType::class;
-    }
+    abstract protected function getAdvancedSearchForm();
     
     /**
      * Get search realm

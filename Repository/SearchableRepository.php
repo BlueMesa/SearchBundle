@@ -1,19 +1,12 @@
 <?php
 
 /*
- * Copyright 2013 Radoslaw Kamil Ejsmont <radoslaw@ejsmont.net>
+ * This file is part of the SearchBundle.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2017 BlueMesa LabDB Contributors <labdb@bluemesa.eu>
  *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Bluemesa\Bundle\SearchBundle\Repository;
@@ -21,6 +14,9 @@ namespace Bluemesa\Bundle\SearchBundle\Repository;
 use Bluemesa\Bundle\AclBundle\Repository\EntityRepository;
 use Bluemesa\Bundle\SearchBundle\Search\SearchQueryInterface;
 use Bluemesa\Bundle\SearchBundle\Search\ACLSearchQueryInterface;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * SearchableRepository
@@ -44,8 +40,8 @@ abstract class SearchableRepository extends EntityRepository implements Searchab
     /**
      * Get search QueryBuilder
      * 
-     * @param Bluemesa\SearchBundle\Search\SearchQueryInterface $search
-     * @return Doctrine\ORM\QueryBuilder
+     * @param  SearchQueryInterface $search
+     * @return QueryBuilder
      */
     protected function getSearchQueryBuilder(SearchQueryInterface $search)
     {
@@ -66,8 +62,8 @@ abstract class SearchableRepository extends EntityRepository implements Searchab
     /**
      * Get search result count Query
      * 
-     * @param Bluemesa\SearchBundle\Search\SearchQueryInterface $search
-     * @return Doctrine\ORM\Query
+     * @param  SearchQueryInterface $search
+     * @return Query
      */
     protected function getSearchResultCountQuery(SearchQueryInterface $search)
     {
@@ -81,8 +77,8 @@ abstract class SearchableRepository extends EntityRepository implements Searchab
     /**
      * Get search result count QueryBuilder
      * 
-     * @param Bluemesa\SearchBundle\Search\SearchQueryInterface $search
-     * @return Doctrine\ORM\QueryBuilder
+     * @param  SearchQueryInterface $search
+     * @return QueryBuilder
      */
     protected function getSearchResultCountQueryBuilder(SearchQueryInterface $search)
     {
@@ -94,8 +90,8 @@ abstract class SearchableRepository extends EntityRepository implements Searchab
     /**
      * Create DQL expression from search terms
      * 
-     * @param Bluemesa\SearchBundle\Search\SearchQueryInterface $search
-     * @return \Doctrine\ORM\Query\Expr
+     * @param  SearchQueryInterface $search
+     * @return Expr\Base
      */
     protected function getSearchExpression(SearchQueryInterface $search)
     {        
@@ -127,7 +123,7 @@ abstract class SearchableRepository extends EntityRepository implements Searchab
     /**
      * Get fields to search
      * 
-     * @param type $options
+     * @param  SearchQueryInterface $search
      * @return array
      */
     protected function getSearchFields(SearchQueryInterface $search)
