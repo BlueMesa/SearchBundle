@@ -144,7 +144,8 @@ class SearchHandler
         $type = $request->get('search_type');
         $realm = $request->get('search_realm');
         $simple = $request->get('search_simple');
-        $form = $this->factory->create($type, null, array('simple' => $simple));
+        $name = 'search_' . $realm . ($simple ? '_simple' : '_advanced');
+        $form = $this->factory->createNamed($name, $type, null, array('simple' => $simple));
 
         return View::create(array('form' => $form->createView(), 'realm' => $realm));
     }
@@ -159,7 +160,16 @@ class SearchHandler
     {
         $type = $request->get('search_type');
         $realm = $request->get('search_realm');
-        $form = $this->factory->create($type);
+        $name_simple = 'search_' . $realm . '_simple';
+        $name_advanced = 'search_' . $realm . '_advanced';
+
+        if ($request->request->has($name_simple)) {
+            $form = $this->factory->createNamed($name_simple, $type);
+        } elseif ($request->request->has($name_advanced)) {
+            $form = $this->factory->createNamed($name_advanced, $type);
+        } else {
+            $form = $this->factory->create($type);
+        }
 
         $event = new ResultActionEvent($request, $form);
         $this->dispatcher->dispatch(SearchControllerEvents::RESULT_INITIALIZE, $event);
