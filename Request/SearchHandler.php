@@ -202,7 +202,7 @@ class SearchHandler
             }
         }
 
-        $event = new ResultActionEvent($request, $form, $query, $repository, $entities);
+        $event = new ResultActionEvent($request, $form, $query, $repository, $entities, $event->getView());
         $this->dispatcher->dispatch(SearchControllerEvents::RESULT_FETCHED, $event);
 
         if (null === $view = $event->getView()) {

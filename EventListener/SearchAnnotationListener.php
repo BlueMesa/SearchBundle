@@ -18,6 +18,7 @@ use JMS\DiExtraBundle\Annotation as DI;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -105,12 +106,16 @@ class SearchAnnotationListener
         $action = $this->getActionName($annotation, $m);
         $type = $this->getFormType($annotation, $c, $m);
         $realm = $this->getSearchRealm($annotation);
+        $route = $this->getRedirectRoute($annotation);
         $simple = ! $event->isMasterRequest();
 
         $this->addRequestAttribute($request, 'search_action', $action);
         $this->addRequestAttribute($request, 'search_type', $type);
         $this->addRequestAttribute($request, 'search_realm', $realm);
         $this->addRequestAttribute($request, 'search_simple', $simple);
+        if (null !== $route) {
+            $this->addRequestAttribute($request, 'search_unique_redirect', $route);
+        }
     }
 
     /**
@@ -184,6 +189,28 @@ class SearchAnnotationListener
         }
 
         return $realm;
+    }
+
+    /**
+     * @param Search $annotation
+     *
+     * @return string
+     * @throws RouteNotFoundException
+     */
+    private function getRedirectRoute(Search $annotation)
+    {
+        $route = $annotation->getUniqueResultRoute();
+        if (null !== $route) {
+            try {
+                $this->router->generate($route);
+            } catch (\Exception $e) {
+                if ($e instanceof RouteNotFoundException) {
+                    throw $e;
+                }
+            }
+        }
+
+        return $route;
     }
 
     /**
